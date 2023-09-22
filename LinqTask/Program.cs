@@ -7,13 +7,6 @@ namespace LinqTask
 {
     class Program
     {
-        private readonly IService iservice;
-
-        public Program(IService _iservice)
-        {
-            iservice = _iservice;
-        }
-
         static void Main(string[] args)
         {
             var service = new Service();

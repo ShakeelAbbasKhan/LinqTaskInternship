@@ -9,9 +9,9 @@ namespace LinqTask.Services
 {
     public class InternshipService
     {
-        private readonly Service service;
+        private readonly IService service;
 
-        public InternshipService(Service service)
+        public InternshipService(IService service)
         {
             this.service = service;
         }
@@ -44,12 +44,12 @@ namespace LinqTask.Services
             internship.Details.Duration = int.Parse(Console.ReadLine());
             Console.Write("Is remote? (yes/no):");
             internship.Details.IsRemote = Console.ReadLine().Equals("yes", StringComparison.OrdinalIgnoreCase);
-            Console.Write("Review 1.Rating 2. Comment:");
+            Console.Write("Review:1.Rating:");
             Review review = new Review
             {
                 Rating = double.Parse(Console.ReadLine())
             };
-            Console.Write("Comment:");
+            Console.Write("2.Comment:");
             review.Comment = Console.ReadLine();
             internship.Reviews = new List<Review> { review };
 
@@ -72,8 +72,7 @@ namespace LinqTask.Services
             
             
             // Search
-            var result = service.SearchInternships().Result;
-            List<Internship> internships = result.ToList();
+            var internships = service.SearchInternships().ToList();
 
 
             //Result
@@ -90,7 +89,6 @@ namespace LinqTask.Services
                     Console.WriteLine($"Location: {internship.Company.Location}");
                     Console.WriteLine($"Industry: {internship.Company.Industry}");
                     Console.WriteLine($"Salary: ${internship.Details.Salary}");
-                    // Display other internship details as needed
                     Console.WriteLine();
                 }
             }

@@ -18,7 +18,7 @@ namespace LinqTask.Services
             Internships.Add(internship);
         }
 
-        public async Task<List<Internship>> SearchInternships()
+        public List<Internship> SearchInternships()
         {
            // int.Parse()
             Console.WriteLine("Enter the location (or leave empty to skip): ");
@@ -65,28 +65,28 @@ namespace LinqTask.Services
                 .ToList();
             //new
 
-            var IntershipGroups = FilteredInternships
-                .GroupBy(x => new { x.Company.Name, x.Company.Location, x.Details.Salary, x.Details.Duration })
-                  .OrderByDescending(g => g.Key.Salary).ThenBy(g => g.Key.Duration)
-                  .Select(g => new
-                  {
-                      Name = g.Key.Name,
-                      Location = g.Key.Location,
-                      Duration = g.Key.Duration,
-                      Internships = g.OrderByDescending(x => x.Reviews)
-                  });
-            foreach (var group in IntershipGroups)
-            {
-                Console.Write("Name: {0}, Location: {1},Duration: {2}, Count: {3},", group.Name, group.Location, group.Duration, group.Internships.Count());
+            //var IntershipGroups = FilteredInternships
+            //    .GroupBy(x => new { x.Company.Name, x.Company.Location, x.Details.Salary, x.Details.Duration })
+            //      .OrderByDescending(g => g.Key.Salary).ThenBy(g => g.Key.Duration)
+            //      .Select(g => new
+            //      {
+            //          Name = g.Key.Name,
+            //          Location = g.Key.Location,
+            //          Duration = g.Key.Duration,
+            //          Internships = g.OrderByDescending(x => x.Reviews)
+            //      });
+            //foreach (var group in IntershipGroups)
+            //{
+            //    Console.Write("Name: {0}, Location: {1},Duration: {2}, Count: {3},", group.Name, group.Location, group.Duration, group.Internships.Count());
 
-                foreach (var intern in group.Internships)
-                {
-                    string skills = string.Join(", ", intern.Details.Skills);
+            //    foreach (var intern in group.Internships)
+            //    {
+            //        string skills = string.Join(", ", intern.Details.Skills);
 
-                    Console.WriteLine($"Salary: {intern.Details.Salary}, Remote: {intern.Details.IsRemote}, Skills: {skills}");
-                    // Console.WriteLine(intern.Details.Salary+ "," +  intern.Details.IsRemote + "," + intern.Details.Skills);
-                }
-            }
+            //        Console.WriteLine($"Salary: {intern.Details.Salary}, Remote: {intern.Details.IsRemote}, Skills: {skills}");
+            //        // Console.WriteLine(intern.Details.Salary+ "," +  intern.Details.IsRemote + "," + intern.Details.Skills);
+            //    }
+            //}
 
 
 

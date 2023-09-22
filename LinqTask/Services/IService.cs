@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace LinqTask.Services
 {
-    internal interface IService
+    public interface IService
     {
         public void AddInternship(Internship internship);
-        public Task<List<Internship>> SearchInternships();
+        public List<Internship> SearchInternships();
     }
 }
