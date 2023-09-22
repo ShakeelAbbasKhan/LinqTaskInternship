@@ -31,19 +31,81 @@ namespace LinqTask.Services
             internship.Company.Location = Console.ReadLine();
             Console.Write("Company Industry:");
             internship.Company.Industry = Console.ReadLine();
-            Console.Write("Salary:");
-            internship.Details = new InternshipDetails
+            //Console.Write("Salary:");
+            //internship.Details = new InternshipDetails
+            //{
+            //    Salary = int.Parse(Console.ReadLine())
+            //};
+
+            while (true)
             {
-                Salary = int.Parse(Console.ReadLine())
-            };
-            Console.Write("Start Date:");
-            internship.Details.StartDate = DateTime.ParseExact(Console.ReadLine(), "yyyy-MM-dd", null);
-            Console.Write("Skills:");
+                Console.Write("Salary:");
+                if (int.TryParse(Console.ReadLine(), out int salary))
+                {
+                    internship.Details = new InternshipDetails
+                    {
+                        Salary = salary
+                    };
+                    break; // Exit the loop if parsing is successful
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid integer for Salary.");
+                }
+            }
+
+            // Start Date Input with Validation
+            while (true)
+            {
+                Console.Write("Start Date (yyyy-MM-dd):");
+                if (DateTime.TryParseExact(Console.ReadLine(), "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime startDate))
+                {
+                    internship.Details.StartDate = startDate;
+                    break; // Exit the loop if parsing is successful
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid date in the format 'yyyy-MM-dd'.");
+                }
+            }
+
+            Console.Write("Skills (comma-separated):");
             internship.Details.Skills = Console.ReadLine().Split(',').Select(skill => skill.Trim()).ToList();
-            Console.Write("Duration:");
-            internship.Details.Duration = int.Parse(Console.ReadLine());
-            Console.Write("Is remote? (yes/no):");
-            internship.Details.IsRemote = Console.ReadLine().Equals("yes", StringComparison.OrdinalIgnoreCase);
+
+            // Duration Input with Validation
+            while (true)
+            {
+                Console.Write("Duration:");
+                if (int.TryParse(Console.ReadLine(), out int duration))
+                {
+                    internship.Details.Duration = duration;
+                    break; // Exit the loop if parsing is successful
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter a valid integer for Duration.");
+                }
+            }
+
+            while (true)
+            {
+                Console.Write("Is remote? (yes/no):");
+                string isRemoteInput = Console.ReadLine();
+                if (isRemoteInput.Equals("yes", StringComparison.OrdinalIgnoreCase))
+                {
+                    internship.Details.IsRemote = true;
+                    break;
+                }
+                else if (isRemoteInput.Equals("no", StringComparison.OrdinalIgnoreCase))
+                {
+                    internship.Details.IsRemote = false;
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input. Please enter 'yes' or 'no'.");
+                }
+            }
             Console.Write("Review:1.Rating:");
             Review review = new Review
             {
@@ -52,7 +114,6 @@ namespace LinqTask.Services
             Console.Write("2.Comment:");
             review.Comment = Console.ReadLine();
             internship.Reviews = new List<Review> { review };
-
             service.AddInternship(internship);
         }
 
@@ -84,13 +145,24 @@ namespace LinqTask.Services
             {
                 foreach (var internship in internships)
                 {
+                    Console.WriteLine($"Id:{internship.Id}");
                     Console.WriteLine($"Internship Name: {internship.Name}");
                     Console.WriteLine($"Company Name: {internship.Company.Name}");
                     Console.WriteLine($"Location: {internship.Company.Location}");
                     Console.WriteLine($"Industry: {internship.Company.Industry}");
-                    Console.WriteLine($"Salary: ${internship.Details.Salary}");
+                    Console.WriteLine($"Salary: {internship.Details.Salary}");
                     Console.WriteLine();
                 }
+            }
+        }
+        public void DeletedData()
+        {
+            Console.Write("Enter Id of internship to Delete :");
+            int Id = Convert.ToInt32(Console.ReadLine());
+            var result = service.DeleteInternship(Id);
+            if(result != null)
+            {
+                Console.WriteLine(result.ToString());
             }
         }
     }

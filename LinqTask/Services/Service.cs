@@ -11,27 +11,29 @@ namespace LinqTask.Services
     {
         public List<Internship> Internships  = new List<Internship>();
         public List<Internship> FilteredInternships = new List<Internship>();
+        private static int nextInternshipId = 1;
 
         public void AddInternship(Internship internship)
         {
-            internship.Id = Internships.Count + 1;
+            internship.Id = nextInternshipId;
             Internships.Add(internship);
+            nextInternshipId++;
         }
 
         public List<Internship> SearchInternships()
         {
            // int.Parse()
-            Console.WriteLine("Enter the location (or leave empty to skip): ");
+            Console.WriteLine("Enter location (or leave empty to skip): ");
             string locationFilter = Console.ReadLine();
-            Console.WriteLine("Enter the industry (or leave empty to skip): ");
+            Console.WriteLine("Enter industry (or leave empty to skip): ");
             string industryFilter = Console.ReadLine();
-            Console.WriteLine("Enter the minimum salary (or leave empty to skip): ");
+            Console.WriteLine("Enter minimum salary (or leave empty to skip): ");
             int? minSalaryFilter = int.TryParse(Console.ReadLine(),out int minSalary) ? minSalary : (int?)null;
             Console.WriteLine("Enter the StartDate (or leave empty to skip): ");
             string startDate = Console.ReadLine();
-            //Console.WriteLine("Enter the Duration (or leave empty to skip): ");
-            //int duration = int.Parse(Console.ReadLine());
-           
+            Console.WriteLine("Enter duration (or leave empty to skip): ");
+            int? duration = int.TryParse(Console.ReadLine(), out int durationD) ? durationD : (int?)null;
+
 
             FilteredInternships = Internships
                 .Where(internship =>
@@ -39,7 +41,7 @@ namespace LinqTask.Services
                     && (string.IsNullOrEmpty(industryFilter) || internship.Company.Industry.Equals(industryFilter, StringComparison.OrdinalIgnoreCase))
                     && (!minSalaryFilter.HasValue || internship.Details.Salary >= minSalaryFilter.Value)
                      && (string.IsNullOrEmpty(startDate) || DateTime.Equals(internship.Details.StartDate, DateTime.Parse(startDate)))
-                     //&& (duration == 0 || internship.Details.Duration < duration)
+                     && (duration == 0 || internship.Details.Duration == duration)
                      )
                 .ToList();
             // Sorting
@@ -95,5 +97,21 @@ namespace LinqTask.Services
 
             return FilteredInternships;
         }
+
+        public string DeleteInternship(int id)
+        {
+            
+            var removedCount = Internships.Where(x=>x.Id==id).FirstOrDefault();
+            if (removedCount != null)
+            {
+                Internships.Remove(removedCount);
+                return "Internship deleted successfully";
+            }
+            else
+            {
+                return "No internship found with id :"+id;
+            }
+        }
+
     }
 }
