@@ -12,5 +12,7 @@ namespace LinqTask.Services
         public void AddInternship(Internship internship);
         public List<Internship> SearchInternships();
         public string DeleteInternship(int id);
+        public string UpdateInternship(int id);
+
     }
 }

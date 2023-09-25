@@ -165,5 +165,16 @@ namespace LinqTask.Services
                 Console.WriteLine(result.ToString());
             }
         }
+
+        public void UpdateData()
+        {
+            Console.Write("Enter Id of internship to update :");
+            int Id = Convert.ToInt32(Console.ReadLine());
+            var result = service.UpdateInternship(Id);
+            if (result != null)
+            {
+                Console.WriteLine(result.ToString());
+            }
+        }
     }
 }
